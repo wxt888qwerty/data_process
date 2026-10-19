@@ -41,8 +41,13 @@
       "unflagged_failures": 20,
       "unflagged_passes": 481,
       "precision": 0.3146,
+      "precision_wilson_95_ci": [
+        0.2559,
+        0.3797
+      ],
       "failure_recall": 0.7701,
-      "theoretical_net_hours": 765
+      "theoretical_net_hours": 765,
+      "minimum_flagged_failures_to_prevent_for_positive_net": 57
     },
     "chronological_holdout": {
       "labeled_batches": 282,
@@ -54,8 +59,13 @@
       "unflagged_failures": 12,
       "unflagged_passes": 191,
       "precision": 0.3924,
+      "precision_wilson_95_ci": [
+        0.2921,
+        0.5027
+      ],
       "failure_recall": 0.7209,
-      "theoretical_net_hours": 745
+      "theoretical_net_hours": 745,
+      "minimum_flagged_failures_to_prevent_for_positive_net": 22
     },
     "all_labeled_historical_data": {
       "labeled_batches": 996,
@@ -67,8 +77,13 @@
       "unflagged_failures": 32,
       "unflagged_passes": 672,
       "precision": 0.3356,
+      "precision_wilson_95_ci": [
+        0.2839,
+        0.3916
+      ],
       "failure_recall": 0.7538,
-      "theoretical_net_hours": 1510
+      "theoretical_net_hours": 1510,
+      "minimum_flagged_failures_to_prevent_for_positive_net": 78
     }
   },
   "fleet_stratified_rule": {
@@ -115,8 +130,13 @@
       "unflagged_failures": 24,
       "unflagged_passes": 540,
       "precision": 0.42,
+      "precision_wilson_95_ci": [
+        0.344,
+        0.5
+      ],
       "failure_recall": 0.7241,
-      "theoretical_net_hours": 1725
+      "theoretical_net_hours": 1725,
+      "minimum_flagged_failures_to_prevent_for_positive_net": 41
     },
     "chronological_holdout": {
       "labeled_batches": 282,
@@ -128,8 +148,13 @@
       "unflagged_failures": 14,
       "unflagged_passes": 210,
       "precision": 0.5,
+      "precision_wilson_95_ci": [
+        0.3754,
+        0.6246
+      ],
       "failure_recall": 0.6744,
-      "theoretical_net_hours": 1015
+      "theoretical_net_hours": 1015,
+      "minimum_flagged_failures_to_prevent_for_positive_net": 16
     },
     "all_labeled_historical_data": {
       "labeled_batches": 996,
@@ -141,8 +166,13 @@
       "unflagged_failures": 38,
       "unflagged_passes": 750,
       "precision": 0.4423,
+      "precision_wilson_95_ci": [
+        0.3765,
+        0.5102
+      ],
       "failure_recall": 0.7077,
-      "theoretical_net_hours": 2740
+      "theoretical_net_hours": 2740,
+      "minimum_flagged_failures_to_prevent_for_positive_net": 56
     }
   },
   "fleet_specific_composite_rule": {
@@ -187,8 +217,13 @@
       "unflagged_failures": 15,
       "unflagged_passes": 533,
       "precision": 0.4337,
+      "precision_wilson_95_ci": [
+        0.3607,
+        0.5098
+      ],
       "failure_recall": 0.8276,
-      "theoretical_net_hours": 2080
+      "theoretical_net_hours": 2080,
+      "minimum_flagged_failures_to_prevent_for_positive_net": 45
     },
     "chronological_holdout": {
       "labeled_batches": 282,
@@ -200,8 +235,125 @@
       "unflagged_failures": 8,
       "unflagged_passes": 204,
       "precision": 0.5,
+      "precision_wilson_95_ci": [
+        0.386,
+        0.614
+      ],
       "failure_recall": 0.814,
-      "theoretical_net_hours": 1225
+      "theoretical_net_hours": 1225,
+      "minimum_flagged_failures_to_prevent_for_positive_net": 19
+    },
+    "chronological_holdout_by_local_day": {
+      "2026-09-06": {
+        "labeled_batches": 134,
+        "failures": 16,
+        "baseline_failure_rate": 0.1194,
+        "flagged_batches": 36,
+        "flagged_failures": 15,
+        "flagged_passes": 21,
+        "unflagged_failures": 1,
+        "unflagged_passes": 97,
+        "precision": 0.4167,
+        "precision_wilson_95_ci": [
+          0.2714,
+          0.578
+        ],
+        "failure_recall": 0.9375,
+        "theoretical_net_hours": 405,
+        "minimum_flagged_failures_to_prevent_for_positive_net": 10
+      },
+      "2026-09-07": {
+        "labeled_batches": 148,
+        "failures": 27,
+        "baseline_failure_rate": 0.1824,
+        "flagged_batches": 34,
+        "flagged_failures": 20,
+        "flagged_passes": 14,
+        "unflagged_failures": 7,
+        "unflagged_passes": 107,
+        "precision": 0.5882,
+        "precision_wilson_95_ci": [
+          0.4222,
+          0.7363
+        ],
+        "failure_recall": 0.7407,
+        "theoretical_net_hours": 820,
+        "minimum_flagged_failures_to_prevent_for_positive_net": 10
+      }
+    },
+    "chronological_holdout_by_fleet": {
+      "东部常态路测队": {
+        "labeled_batches": 71,
+        "failures": 13,
+        "baseline_failure_rate": 0.1831,
+        "flagged_batches": 23,
+        "flagged_failures": 11,
+        "flagged_passes": 12,
+        "unflagged_failures": 2,
+        "unflagged_passes": 46,
+        "precision": 0.4783,
+        "precision_wilson_95_ci": [
+          0.2924,
+          0.6704
+        ],
+        "failure_recall": 0.8462,
+        "theoretical_net_hours": 365,
+        "minimum_flagged_failures_to_prevent_for_positive_net": 7
+      },
+      "北部夜间采集队": {
+        "labeled_batches": 82,
+        "failures": 16,
+        "baseline_failure_rate": 0.1951,
+        "flagged_batches": 21,
+        "flagged_failures": 13,
+        "flagged_passes": 8,
+        "unflagged_failures": 3,
+        "unflagged_passes": 58,
+        "precision": 0.619,
+        "precision_wilson_95_ci": [
+          0.4088,
+          0.7925
+        ],
+        "failure_recall": 0.8125,
+        "theoretical_net_hours": 555,
+        "minimum_flagged_failures_to_prevent_for_positive_net": 6
+      },
+      "南部封闭测试区": {
+        "labeled_batches": 54,
+        "failures": 6,
+        "baseline_failure_rate": 0.1111,
+        "flagged_batches": 14,
+        "flagged_failures": 5,
+        "flagged_passes": 9,
+        "unflagged_failures": 1,
+        "unflagged_passes": 39,
+        "precision": 0.3571,
+        "precision_wilson_95_ci": [
+          0.1634,
+          0.6124
+        ],
+        "failure_recall": 0.8333,
+        "theoretical_net_hours": 95,
+        "minimum_flagged_failures_to_prevent_for_positive_net": 4
+      },
+      "西部高架专项组": {
+        "labeled_batches": 75,
+        "failures": 8,
+        "baseline_failure_rate": 0.1067,
+        "flagged_batches": 12,
+        "flagged_failures": 6,
+        "flagged_passes": 6,
+        "unflagged_failures": 2,
+        "unflagged_passes": 61,
+        "precision": 0.5,
+        "precision_wilson_95_ci": [
+          0.2538,
+          0.7462
+        ],
+        "failure_recall": 0.75,
+        "theoretical_net_hours": 210,
+        "minimum_flagged_failures_to_prevent_for_positive_net": 4
+      }
     },
     "all_labeled_historical_data": {
       "labeled_batches": 996,
@@ -213,8 +365,13 @@
       "unflagged_failures": 23,
       "unflagged_passes": 737,
       "precision": 0.4534,
+      "precision_wilson_95_ci": [
+        0.3911,
+        0.5171
+      ],
       "failure_recall": 0.8231,
-      "theoretical_net_hours": 3305
+      "theoretical_net_hours": 3305,
+      "minimum_flagged_failures_to_prevent_for_positive_net": 63
     }
   },
   "risk_by_calibration_age": {
@@ -240,8 +397,13 @@
       "unflagged_failures": 75,
       "unflagged_passes": 591,
       "precision": 0.25,
+      "precision_wilson_95_ci": [
+        0.1492,
+        0.3878
+      ],
       "failure_recall": 0.1379,
-      "theoretical_net_hours": -60
+      "theoretical_net_hours": -60,
+      "minimum_flagged_failures_to_prevent_for_positive_net": 13
     },
     "chronological_holdout": {
       "labeled_batches": 282,
@@ -253,8 +415,13 @@
       "unflagged_failures": 32,
       "unflagged_passes": 220,
       "precision": 0.3667,
+      "precision_wilson_95_ci": [
+        0.2187,
+        0.5449
+      ],
       "failure_recall": 0.2558,
-      "theoretical_net_hours": 225
+      "theoretical_net_hours": 225,
+      "minimum_flagged_failures_to_prevent_for_positive_net": 9
     },
     "all_labeled_historical_data": {
       "labeled_batches": 996,
@@ -266,8 +433,13 @@
       "unflagged_failures": 107,
       "unflagged_passes": 811,
       "precision": 0.2949,
+      "precision_wilson_95_ci": [
+        0.2052,
+        0.4038
+      ],
       "failure_recall": 0.1769,
-      "theoretical_net_hours": 165
+      "theoretical_net_hours": 165,
+      "minimum_flagged_failures_to_prevent_for_positive_net": 21
     }
   },
   "outcome_rates_by_fleet": {

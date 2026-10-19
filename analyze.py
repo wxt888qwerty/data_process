@@ -14,9 +14,28 @@ REJECTION_HOURS = 75
 EARLY_CHECK_HOURS = 20
 SPLIT_DATE = "2026-09-06"
 LOCAL_TIMEZONE = "Asia/Shanghai"
+WILSON_Z_95 = 1.959963984540054
 
 
-def metrics(frame: pd.DataFrame, flagged: pd.Series) -> dict[str, int | float | None]:
+def wilson_interval(successes: int, trials: int) -> list[float] | None:
+    """Return a two-sided 95% Wilson interval for a binomial proportion."""
+    if trials == 0:
+        return None
+    p = successes / trials
+    z2 = WILSON_Z_95**2
+    denominator = 1 + z2 / trials
+    center = (p + z2 / (2 * trials)) / denominator
+    margin = (
+        WILSON_Z_95
+        * ((p * (1 - p) / trials + z2 / (4 * trials**2)) ** 0.5)
+        / denominator
+    )
+    return [round(center - margin, 4), round(center + margin, 4)]
+
+
+def metrics(
+    frame: pd.DataFrame, flagged: pd.Series
+) -> dict[str, int | float | list[float] | None]:
     failed = frame["status_ok"].eq(0)
     flag_count = int(flagged.sum())
     true_positive = int((flagged & failed).sum())
@@ -34,8 +53,23 @@ def metrics(frame: pd.DataFrame, flagged: pd.Series) -> dict[str, int | float | 
         "unflagged_failures": false_negative,
         "unflagged_passes": true_negative,
         "precision": round(true_positive / flag_count, 4) if flag_count else None,
+        "precision_wilson_95_ci": wilson_interval(true_positive, flag_count),
         "failure_recall": round(true_positive / failure_count, 4) if failure_count else None,
         "theoretical_net_hours": true_positive * REJECTION_HOURS - flag_count * EARLY_CHECK_HOURS,
+        "minimum_flagged_failures_to_prevent_for_positive_net": (
+            flag_count * EARLY_CHECK_HOURS // REJECTION_HOURS + 1
+            if flag_count
+            else None
+        ),
+    }
+
+
+def grouped_metrics(
+    frame: pd.DataFrame, flagged: pd.Series, group_column: str
+) -> dict[str, dict[str, int | float | list[float] | None]]:
+    return {
+        str(group): metrics(group_frame, flagged.loc[group_frame.index])
+        for group, group_frame in frame.groupby(group_column, sort=True)
     }
 
 
@@ -214,6 +248,12 @@ def main() -> None:
             "training_frame_screen": frame_screening,
             "training": metrics(train, fleet_composite_rule(train)),
             "chronological_holdout": metrics(holdout, fleet_composite_rule(holdout)),
+            "chronological_holdout_by_local_day": grouped_metrics(
+                holdout, fleet_composite_rule(holdout), "local_day"
+            ),
+            "chronological_holdout_by_fleet": grouped_metrics(
+                holdout, fleet_composite_rule(holdout), "fleet_base"
+            ),
             "all_labeled_historical_data": metrics(labeled, fleet_composite_rule(labeled)),
         },
         "risk_by_calibration_age": {
