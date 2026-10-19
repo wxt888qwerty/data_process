@@ -98,6 +98,24 @@ def main() -> None:
     best_net, cutoff_minutes = max(candidates, key=lambda item: (item[0], item[1]))
 
     age_rule = lambda frame: frame["calib_age_minutes"].ge(cutoff_minutes)
+    fleet_screening: dict[str, dict[str, int | float | bool]] = {}
+    selected_fleets: list[str] = []
+    for fleet, group in train.groupby("fleet_base", sort=True):
+        flagged = age_rule(group)
+        true_positives = int((flagged & group["status_ok"].eq(0)).sum())
+        flagged_count = int(flagged.sum())
+        net_hours = true_positives * REJECTION_HOURS - flagged_count * EARLY_CHECK_HOURS
+        include_fleet = net_hours > 0
+        if include_fleet:
+            selected_fleets.append(str(fleet))
+        fleet_screening[str(fleet)] = {
+            "training_flagged_batches": flagged_count,
+            "training_flagged_failures": true_positives,
+            "training_theoretical_net_hours": net_hours,
+            "included_in_stratified_rule": include_fleet,
+        }
+
+    fleet_age_rule = lambda frame: age_rule(frame) & frame["fleet_base"].isin(selected_fleets)
     frame_rule = lambda frame: frame["valid_frame_ratio"].le(2)
     fresh = labeled["calib_age_minutes"].lt(cutoff_minutes)
     stale = ~fresh
@@ -139,6 +157,21 @@ def main() -> None:
             "training": metrics(train, age_rule(train)),
             "chronological_holdout": metrics(holdout, age_rule(holdout)),
             "all_labeled_historical_data": metrics(labeled, age_rule(labeled)),
+        },
+        "fleet_stratified_rule": {
+            "expression": (
+                f"calibration age >= {cutoff_minutes:g} minutes AND fleet_base is in "
+                "the training-selected positive-net fleet set"
+            ),
+            "fleet_selection_method": (
+                "Include a fleet only when its training-set net hours are positive "
+                "at the selected age threshold"
+            ),
+            "included_fleets": selected_fleets,
+            "training_fleet_screen": fleet_screening,
+            "training": metrics(train, fleet_age_rule(train)),
+            "chronological_holdout": metrics(holdout, fleet_age_rule(holdout)),
+            "all_labeled_historical_data": metrics(labeled, fleet_age_rule(labeled)),
         },
         "risk_by_calibration_age": {
             "below_threshold": {
