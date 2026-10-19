@@ -145,6 +145,78 @@
       "theoretical_net_hours": 2740
     }
   },
+  "fleet_specific_composite_rule": {
+    "expression": "age >= 12 minutes for positive-net training fleets; or valid_frame_ratio <= the positive-net training cutoff for its fleet",
+    "age_fleets_included": [
+      "东部常态路测队",
+      "北部夜间采集队",
+      "南部封闭测试区"
+    ],
+    "frame_fleet_cutoffs": {
+      "西部高架专项组": 3
+    },
+    "training_frame_screen": {
+      "东部常态路测队": {
+        "training_valid_frame_cutoff": -1,
+        "training_theoretical_net_hours": 0,
+        "included_in_composite_rule": false
+      },
+      "北部夜间采集队": {
+        "training_valid_frame_cutoff": -1,
+        "training_theoretical_net_hours": 0,
+        "included_in_composite_rule": false
+      },
+      "南部封闭测试区": {
+        "training_valid_frame_cutoff": -1,
+        "training_theoretical_net_hours": 0,
+        "included_in_composite_rule": false
+      },
+      "西部高架专项组": {
+        "training_valid_frame_cutoff": 3,
+        "training_theoretical_net_hours": 355,
+        "included_in_composite_rule": true
+      }
+    },
+    "training": {
+      "labeled_batches": 714,
+      "failures": 87,
+      "baseline_failure_rate": 0.1218,
+      "flagged_batches": 166,
+      "flagged_failures": 72,
+      "flagged_passes": 94,
+      "unflagged_failures": 15,
+      "unflagged_passes": 533,
+      "precision": 0.4337,
+      "failure_recall": 0.8276,
+      "theoretical_net_hours": 2080
+    },
+    "chronological_holdout": {
+      "labeled_batches": 282,
+      "failures": 43,
+      "baseline_failure_rate": 0.1525,
+      "flagged_batches": 70,
+      "flagged_failures": 35,
+      "flagged_passes": 35,
+      "unflagged_failures": 8,
+      "unflagged_passes": 204,
+      "precision": 0.5,
+      "failure_recall": 0.814,
+      "theoretical_net_hours": 1225
+    },
+    "all_labeled_historical_data": {
+      "labeled_batches": 996,
+      "failures": 130,
+      "baseline_failure_rate": 0.1305,
+      "flagged_batches": 236,
+      "flagged_failures": 107,
+      "flagged_passes": 129,
+      "unflagged_failures": 23,
+      "unflagged_passes": 737,
+      "precision": 0.4534,
+      "failure_recall": 0.8231,
+      "theoretical_net_hours": 3305
+    }
+  },
   "risk_by_calibration_age": {
     "below_threshold": {
       "batches": 704,

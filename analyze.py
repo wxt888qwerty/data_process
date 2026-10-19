@@ -116,6 +116,37 @@ def main() -> None:
         }
 
     fleet_age_rule = lambda frame: age_rule(frame) & frame["fleet_base"].isin(selected_fleets)
+    frame_screening: dict[str, dict[str, int | float | bool]] = {}
+    selected_frame_cutoffs: dict[str, int] = {}
+    for fleet, group in train.groupby("fleet_base", sort=True):
+        frame_candidates: list[tuple[int, int]] = [(0, -1)]
+        for threshold in range(int(group["valid_frame_ratio"].min()), int(group["valid_frame_ratio"].max()) + 1):
+            flagged = group["valid_frame_ratio"].le(threshold)
+            true_positives = int((flagged & group["status_ok"].eq(0)).sum())
+            flagged_count = int(flagged.sum())
+            net_hours = true_positives * REJECTION_HOURS - flagged_count * EARLY_CHECK_HOURS
+            frame_candidates.append((net_hours, threshold))
+        best_frame_net, best_frame_cutoff = max(
+            frame_candidates, key=lambda item: (item[0], -item[1])
+        )
+        include_frame_rule = best_frame_net > 0 and best_frame_cutoff >= 0
+        if include_frame_rule:
+            selected_frame_cutoffs[str(fleet)] = best_frame_cutoff
+        frame_screening[str(fleet)] = {
+            "training_valid_frame_cutoff": best_frame_cutoff,
+            "training_theoretical_net_hours": best_frame_net,
+            "included_in_composite_rule": include_frame_rule,
+        }
+
+    fleet_composite_rule = lambda frame: (
+        fleet_age_rule(frame)
+        | (
+            frame["fleet_base"].map(selected_frame_cutoffs).notna()
+            & frame["valid_frame_ratio"].le(
+                frame["fleet_base"].map(selected_frame_cutoffs).fillna(float("inf"))
+            )
+        )
+    )
     frame_rule = lambda frame: frame["valid_frame_ratio"].le(2)
     fresh = labeled["calib_age_minutes"].lt(cutoff_minutes)
     stale = ~fresh
@@ -172,6 +203,18 @@ def main() -> None:
             "training": metrics(train, fleet_age_rule(train)),
             "chronological_holdout": metrics(holdout, fleet_age_rule(holdout)),
             "all_labeled_historical_data": metrics(labeled, fleet_age_rule(labeled)),
+        },
+        "fleet_specific_composite_rule": {
+            "expression": (
+                f"age >= {cutoff_minutes:g} minutes for positive-net training fleets; "
+                "or valid_frame_ratio <= the positive-net training cutoff for its fleet"
+            ),
+            "age_fleets_included": selected_fleets,
+            "frame_fleet_cutoffs": selected_frame_cutoffs,
+            "training_frame_screen": frame_screening,
+            "training": metrics(train, fleet_composite_rule(train)),
+            "chronological_holdout": metrics(holdout, fleet_composite_rule(holdout)),
+            "all_labeled_historical_data": metrics(labeled, fleet_composite_rule(labeled)),
         },
         "risk_by_calibration_age": {
             "below_threshold": {
