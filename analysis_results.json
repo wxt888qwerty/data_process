@@ -1,0 +1,195 @@
+{
+  "source": "doc\\delivery_batches.csv",
+  "time_zone_for_split": "Asia/Shanghai",
+  "data_quality": {
+    "raw_rows": 1085,
+    "exact_duplicate_rows_removed": 52,
+    "unique_rows": 1033,
+    "unique_batch_ids": 1033,
+    "pending_rows_excluded_from_failure_rates": 37,
+    "labeled_rows": 996,
+    "failures": 130,
+    "passes": 866,
+    "negative_calibration_ages": 0,
+    "packaged_at_local_range": [
+      "2026-09-01T07:09:00+08:00",
+      "2026-09-07T21:56:00+08:00"
+    ]
+  },
+  "cost_assumptions": {
+    "hours_per_final_rejection": 75,
+    "hours_per_early_check": 20,
+    "break_even_flagged_failure_rate": 0.2667,
+    "net_hours_assumes_every_flagged_failure_is_prevented": true
+  },
+  "split": {
+    "training_local_dates": "through 2026-09-06 exclusive",
+    "holdout_local_dates": "from 2026-09-06 inclusive",
+    "training_batches": 714,
+    "holdout_batches": 282
+  },
+  "selected_rule": {
+    "expression": "calibration age >= 12 minutes",
+    "threshold_selected_on_training_net_hours": 765,
+    "training": {
+      "labeled_batches": 714,
+      "failures": 87,
+      "baseline_failure_rate": 0.1218,
+      "flagged_batches": 213,
+      "flagged_failures": 67,
+      "flagged_passes": 146,
+      "unflagged_failures": 20,
+      "unflagged_passes": 481,
+      "precision": 0.3146,
+      "failure_recall": 0.7701,
+      "theoretical_net_hours": 765
+    },
+    "chronological_holdout": {
+      "labeled_batches": 282,
+      "failures": 43,
+      "baseline_failure_rate": 0.1525,
+      "flagged_batches": 79,
+      "flagged_failures": 31,
+      "flagged_passes": 48,
+      "unflagged_failures": 12,
+      "unflagged_passes": 191,
+      "precision": 0.3924,
+      "failure_recall": 0.7209,
+      "theoretical_net_hours": 745
+    },
+    "all_labeled_historical_data": {
+      "labeled_batches": 996,
+      "failures": 130,
+      "baseline_failure_rate": 0.1305,
+      "flagged_batches": 292,
+      "flagged_failures": 98,
+      "flagged_passes": 194,
+      "unflagged_failures": 32,
+      "unflagged_passes": 672,
+      "precision": 0.3356,
+      "failure_recall": 0.7538,
+      "theoretical_net_hours": 1510
+    }
+  },
+  "risk_by_calibration_age": {
+    "below_threshold": {
+      "batches": 704,
+      "failures": 32,
+      "failure_rate": 0.0455
+    },
+    "at_or_above_threshold": {
+      "batches": 292,
+      "failures": 98,
+      "failure_rate": 0.3356
+    }
+  },
+  "secondary_signal_valid_frame_ratio_le_2": {
+    "training": {
+      "labeled_batches": 714,
+      "failures": 87,
+      "baseline_failure_rate": 0.1218,
+      "flagged_batches": 48,
+      "flagged_failures": 12,
+      "flagged_passes": 36,
+      "unflagged_failures": 75,
+      "unflagged_passes": 591,
+      "precision": 0.25,
+      "failure_recall": 0.1379,
+      "theoretical_net_hours": -60
+    },
+    "chronological_holdout": {
+      "labeled_batches": 282,
+      "failures": 43,
+      "baseline_failure_rate": 0.1525,
+      "flagged_batches": 30,
+      "flagged_failures": 11,
+      "flagged_passes": 19,
+      "unflagged_failures": 32,
+      "unflagged_passes": 220,
+      "precision": 0.3667,
+      "failure_recall": 0.2558,
+      "theoretical_net_hours": 225
+    },
+    "all_labeled_historical_data": {
+      "labeled_batches": 996,
+      "failures": 130,
+      "baseline_failure_rate": 0.1305,
+      "flagged_batches": 78,
+      "flagged_failures": 23,
+      "flagged_passes": 55,
+      "unflagged_failures": 107,
+      "unflagged_passes": 811,
+      "precision": 0.2949,
+      "failure_recall": 0.1769,
+      "theoretical_net_hours": 165
+    }
+  },
+  "outcome_rates_by_fleet": {
+    "东部常态路测队": {
+      "labeled_batches": 254,
+      "failures": 40,
+      "failure_rate": 0.1575
+    },
+    "北部夜间采集队": {
+      "labeled_batches": 243,
+      "failures": 36,
+      "failure_rate": 0.1481
+    },
+    "南部封闭测试区": {
+      "labeled_batches": 231,
+      "failures": 32,
+      "failure_rate": 0.1385
+    },
+    "西部高架专项组": {
+      "labeled_batches": 268,
+      "failures": 22,
+      "failure_rate": 0.0821
+    }
+  },
+  "outcome_rates_by_modality": {
+    "主车顶激光雷达": {
+      "labeled_batches": 126,
+      "failures": 16,
+      "failure_rate": 0.127
+    },
+    "前向毫米波雷达": {
+      "labeled_batches": 121,
+      "failures": 19,
+      "failure_rate": 0.157
+    },
+    "前视长焦相机": {
+      "labeled_batches": 107,
+      "failures": 12,
+      "failure_rate": 0.1121
+    },
+    "惯导IMU单元": {
+      "labeled_batches": 134,
+      "failures": 16,
+      "failure_rate": 0.1194
+    },
+    "环视广角相机": {
+      "labeled_batches": 121,
+      "failures": 17,
+      "failure_rate": 0.1405
+    },
+    "盲区补盲激光雷达": {
+      "labeled_batches": 122,
+      "failures": 16,
+      "failure_rate": 0.1311
+    },
+    "车路协同通信单元": {
+      "labeled_batches": 131,
+      "failures": 16,
+      "failure_rate": 0.1221
+    },
+    "驾驶员监控相机": {
+      "labeled_batches": 134,
+      "failures": 18,
+      "failure_rate": 0.1343
+    }
+  },
+  "mean_package_size_mb": {
+    "failed": 54.1,
+    "passed": 51.18
+  }
+}
